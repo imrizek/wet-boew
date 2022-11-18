@@ -109,14 +109,18 @@ var $modal, $modalLink, countdownInterval, i18n, i18nText,
 	 * @param {Object} settings Key-value object
 	 */
 	initEventTimeout = function( $elm, eventName, time, settings ) {
-
 		// Clear any existing timeout for the event
 		clearTimeout( $elm.data( eventName ) );
-
 		// Create the new timeout that will trigger the event
 		$elm.data( eventName, setTimeout( function() {
 			$elm.trigger( eventName, settings );
 		}, parseTime( time ) ) );
+		
+		window.addEventListener( "visibilitychange", function( event ) {
+			if ( event.persisted ) {
+				$elm.trigger( eventName, settings );
+			}
+		});
 	},
 
 	/**
